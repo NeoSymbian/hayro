@@ -50,7 +50,7 @@ phf = { version = "0.13.1", default-features = false }
 moxcms = { version = "0.8.1" }
 rustc-hash = { version = "2", default-features = false }
 siphasher = { version = "1", default-features = false }
-skrifa = { version = "0.49.0", default-features = false, features = ["libm"] }
+skrifa = { version = "0.49.0", default-features = false, features = ["libm", "autohint_shaping"] }
 smallvec = { version = "1" }
 hashbrown = { version = "0.16", default-features = false }
 spin = { version = "0.10", default-features = false, features = ["spin_mutex", "lazy", "once"] }
