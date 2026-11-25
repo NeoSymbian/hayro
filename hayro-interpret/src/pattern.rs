@@ -11,6 +11,9 @@ use crate::util::{Float32Ext, RectExt, hash128};
 use crate::x_object::soft_mask::SoftMask;
 use crate::{BlendMode, CacheKey, ClipPath, DrawMode, DrawProps, Image, ImageDrawProps};
 use crate::{FillRule, InterpreterSettings, Paint, interpret};
+use alloc::boxed::Box;
+use alloc::sync::Arc;
+use core::fmt::{Debug, Formatter};
 use hayro_syntax::content::TypedIter;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Stream;
@@ -21,8 +24,6 @@ use hayro_syntax::object::{Object, dict_or_stream};
 use hayro_syntax::page::Resources;
 use hayro_syntax::xref::XRef;
 use kurbo::{Affine, BezPath, Rect, Shape};
-use std::fmt::{Debug, Formatter};
-use std::sync::Arc;
 
 /// A PDF pattern.
 #[derive(Debug, Clone)]
@@ -152,7 +153,7 @@ pub struct TilingPattern<'a> {
 }
 
 impl Debug for TilingPattern<'_> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str("TilingPattern")
     }
 }

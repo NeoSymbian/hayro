@@ -6,14 +6,15 @@ use crate::device::Device;
 use crate::interpret::state::State;
 use crate::util::hash128;
 use crate::{CacheKey, InterpreterSettings, Paint};
+use core::ops::Deref;
 use hayro_cmap::{BfString, WritingMode};
 use hayro_syntax::page::Resources;
 use hayro_syntax::xref::XRef;
 use kurbo::{Affine, Rect};
-use std::ops::Deref;
 
 mod type3;
 
+use alloc::boxed::Box;
 pub use hayro_font::{
     FallbackFontQuery, FontData, FontQuery, FontStretch, GlyphId, GlyphIdentifier, HintingCache,
     OutlineFontData, OutlineGlyph, StandardFont,

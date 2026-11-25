@@ -6,7 +6,12 @@ use crate::CacheKey;
 use crate::cache::Cache;
 use crate::color::{ColorComponents, ColorSpace};
 use crate::function::{Function, interpolate};
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
 use crate::util::{Float32Ext, PointExt, RectExt};
+use alloc::sync::Arc;
+use alloc::vec;
+use alloc::vec::Vec;
 use hayro_syntax::bit_reader::BitReader;
 use hayro_syntax::object::Array;
 use hayro_syntax::object::Dict;
@@ -19,7 +24,6 @@ use hayro_syntax::object::dict::keys::{
 };
 use kurbo::{Affine, BezPath, CubicBez, ParamCurve, Point, Shape};
 use smallvec::{SmallVec, smallvec};
-use std::sync::Arc;
 
 /// The function supplied to a shading.
 #[derive(Debug, Clone)]
@@ -51,7 +55,7 @@ impl ShadingFunction {
                 }
 
                 for (function, output) in functions.iter().zip(output.iter_mut()) {
-                    function.eval(input, std::slice::from_mut(output))?;
+                    function.eval(input, core::slice::from_mut(output))?;
                 }
 
                 Some(())

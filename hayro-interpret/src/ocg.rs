@@ -1,6 +1,8 @@
+use crate::util::FxHashSet as HashSet;
+use alloc::vec;
+use alloc::vec::Vec;
 use hayro_syntax::object::dict::keys::{BASE_STATE, D, OCGS, OCMD, OCPROPERTIES, OFF, ON, P, TYPE};
 use hayro_syntax::object::{Array, Dict, Name, ObjectIdentifier};
-use std::collections::HashSet;
 
 pub(crate) struct OcgState {
     inactive_ocgs: HashSet<ObjectIdentifier>,
@@ -24,7 +26,7 @@ impl OcgState {
             return Self::dummy();
         };
 
-        let mut inactive = HashSet::new();
+        let mut inactive = HashSet::default();
 
         let base_state = config
             .get::<Name<'_>>(BASE_STATE)

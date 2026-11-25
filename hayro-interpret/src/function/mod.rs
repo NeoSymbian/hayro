@@ -12,10 +12,13 @@ use crate::function::type0::Type0;
 use crate::function::type2::Type2;
 use crate::function::type3::Type3;
 use crate::function::type4::Type4;
+use alloc::sync::Arc;
+use alloc::vec;
+use alloc::vec::Vec;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::dict::keys::{DOMAIN, FUNCTION_TYPE, RANGE};
 use hayro_syntax::object::{Object, dict_or_stream};
-use std::sync::{Arc, OnceLock};
+use spin::Once as OnceLock;
 
 pub(crate) const MAX_COMPONENTS: usize = 32;
 
@@ -219,11 +222,11 @@ impl TransferFunction {
     }
 
     fn samples(&self) -> &[u8; 256] {
-        self.samples.get_or_init(|| {
+        self.samples.call_once(|| {
             let mut output = [0.0; MAX_COMPONENTS];
             let output = &mut output[..self.function.num_outputs()];
 
-            std::array::from_fn(|sample| {
+            core::array::from_fn(|sample| {
                 match self.function.eval(&[sample as f32 * (1.0 / 255.0)], output) {
                     Some(()) => (output[0] * 255.0 + 0.5) as u8,
                     None => sample as u8,

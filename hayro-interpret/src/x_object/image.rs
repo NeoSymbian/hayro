@@ -157,8 +157,8 @@ impl<'a> ImageXObject<'a> {
 
         let has_alpha = self.has_mask();
 
-        let mut soft_mask = std::mem::take(&mut context.compositing_mut().soft_mask);
-        let blend_mode = std::mem::take(&mut context.compositing_mut().blend_mode);
+        let mut soft_mask = core::mem::take(&mut context.compositing_mut().soft_mask);
+        let blend_mode = core::mem::take(&mut context.compositing_mut().blend_mode);
 
         // If image has a soft mask, the soft mask from the graphics state
         // should be discarded.
@@ -168,7 +168,7 @@ impl<'a> ImageXObject<'a> {
 
         device.push_transparency_group(
             context.fill_paint().alpha,
-            std::mem::take(&mut soft_mask),
+            core::mem::take(&mut soft_mask),
             blend_mode,
         );
 

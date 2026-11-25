@@ -25,8 +25,13 @@ This crate has one optional feature:
   will add around ~240KB to your binary.
 */
 
+#![no_std]
 #![forbid(unsafe_code)]
 #![deny(missing_docs)]
+
+extern crate alloc;
+#[cfg(feature = "std")]
+extern crate std;
 
 mod cache;
 mod context;

@@ -1,8 +1,12 @@
 use super::{DecodeContext, decode_context, fix_image_length, unpack_samples};
 use crate::LumaData;
 use crate::function::interpolate;
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
 use crate::x_object::image::{ImageKind, ImageXObject};
-use std::sync::LazyLock;
+use alloc::boxed::Box;
+use alloc::vec::Vec;
+use spin::Lazy as LazyLock;
 
 static BILEVEL_MASK_LUT: LazyLock<Box<[u64; 256]>> = LazyLock::new(|| {
     let mut lut = Box::new([0; 256]);

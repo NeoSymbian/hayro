@@ -4,6 +4,8 @@ use crate::color::{ColorComponents, ToLuma, ToRgb};
 use crate::interpret::state::ActiveTransferFunction;
 use crate::x_object::image::ImageXObject;
 use crate::{ImageData, LumaData, RgbData};
+use alloc::vec;
+use alloc::vec::Vec;
 use hayro_syntax::object::Stream;
 use hayro_syntax::object::dict::keys::*;
 use smallvec::SmallVec;

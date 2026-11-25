@@ -2,6 +2,8 @@
 
 use crate::StrokeProps;
 use crate::interpret::state::{ClipType, CompositingState, PaintState, State, TextState};
+use alloc::vec;
+use alloc::vec::Vec;
 use kurbo::Affine;
 
 /// A copy-on-write group of graphics state parameters.

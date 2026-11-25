@@ -8,13 +8,13 @@ use crate::interpret::text::TextRenderingMode;
 use crate::pattern::Pattern;
 use crate::types::BlendMode;
 use crate::x_object::soft_mask::SoftMask;
+use core::ops::Deref;
 use hayro_syntax::content::ops::{LineCap, LineJoin};
 use hayro_syntax::object::dict::keys::{FONT, SMASK, TR, TR2};
 use hayro_syntax::object::{Array, Dict, Name, Number, Object};
 use hayro_syntax::page::Resources;
 use kurbo::{Affine, BezPath, Vec2};
 use smallvec::smallvec;
-use std::ops::Deref;
 
 /// A transfer function.
 #[derive(Clone, Debug)]

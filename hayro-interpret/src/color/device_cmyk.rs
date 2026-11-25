@@ -1,6 +1,6 @@
 use super::ToRgb;
 use super::icc::ICCProfile;
-use std::sync::LazyLock;
+use spin::Lazy as LazyLock;
 
 #[derive(Debug, Clone)]
 pub(crate) struct DeviceCmyk;

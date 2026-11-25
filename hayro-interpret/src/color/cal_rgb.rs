@@ -1,4 +1,6 @@
 use super::ToRgb;
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::dict::keys::{BLACK_POINT, GAMMA, MATRIX, WHITE_POINT};
 

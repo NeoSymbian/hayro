@@ -10,13 +10,13 @@ readme = "README.md"
 license = { workspace = true }
 
 [dependencies]
-hayro-interpret = { workspace = true }
+hayro-interpret = { workspace = true, features = ["std", "icc"] }
 xmlwriter = { workspace = true }
 siphasher = { workspace = true }
-kurbo = { workspace = true }
+kurbo = { workspace = true, features = ["std"] }
 image = { workspace = true, features = ["png"] }
 base64 = { workspace = true }
-rustc-hash = { workspace = true }
+rustc-hash = { workspace = true, features = ["std"] }
 
 [features]
 default = ["embed-fonts", "embed-cmaps"]

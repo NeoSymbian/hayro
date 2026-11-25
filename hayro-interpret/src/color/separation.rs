@@ -1,6 +1,7 @@
 use super::{ColorSpace, ToRgb, U8Lookup};
 use crate::cache::Cache;
 use crate::function::{Function, MAX_COMPONENTS};
+use alloc::vec::Vec;
 use hayro_syntax::object::{Array, Name, Object};
 
 #[derive(Debug, Clone)]

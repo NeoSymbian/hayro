@@ -11,14 +11,14 @@ readme = "README.md"
 
 [dependencies]
 ab_glyph_rasterizer = { workspace = true }
-hayro-interpret = { workspace = true }
-kurbo = { workspace = true }
+hayro-interpret = { workspace = true, features = ["std", "icc"] }
+kurbo = { workspace = true, features = ["std"] }
 image = { workspace = true, features = ["png"] }
 bytemuck = { workspace = true, features = ["bytemuck_derive"] }
 vello_cpu = { workspace = true }
 # We don't use `rdm` because it causes larger discrepancies between platforms.
 pic-scale = { workspace = true, features = ["neon", "sse", "avx"] }
-rustc-hash = { workspace = true }
+rustc-hash = { workspace = true, features = ["std"] }
 fearless_simd = { workspace = true }
 
 [features]

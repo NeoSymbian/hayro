@@ -1,6 +1,10 @@
 use crate::FontData;
 use crate::GlyphId;
 use crate::{HintingCache, UNITS_PER_EM};
+use alloc::sync::Arc;
+use core::fmt::{Debug, Formatter};
+use core::hash::{Hash, Hasher};
+use core::ops::Range;
 use kurbo::{Affine, BezPath};
 use siphasher::sip128::{Hasher128, SipHasher13};
 use skrifa::font::Kind;
@@ -12,13 +16,12 @@ use skrifa::{
     DrawMemory, Font, GlyphSource, GlyphSourceOrder, HintOptions, OutlineSource, RasterTarget,
     ScalerFont, Tag,
 };
-use std::fmt::{Debug, Formatter};
-use std::hash::{Hash, Hasher};
-use std::ops::Range;
-use std::sync::Arc;
 
 mod pen;
 
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
+use alloc::vec::Vec;
 use pen::OutlinePath;
 
 #[derive(Clone)]
@@ -227,7 +230,7 @@ impl FontProgram {
 }
 
 impl Debug for FontProgram {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "FontProgram {{ .. }}")
     }
 }
@@ -328,7 +331,7 @@ fn cff_glyph_name<'a>(cff: &CffFontRef<'a>, glyph: skrifa::GlyphId) -> Option<&'
     }
 
     let sid = cff.charset()?.string_id(glyph)?;
-    std::str::from_utf8(cff.string(sid)?).ok()
+    core::str::from_utf8(cff.string(sid)?).ok()
 }
 
 pub(crate) fn content_hash(data: &[u8], index: u32) -> u128 {

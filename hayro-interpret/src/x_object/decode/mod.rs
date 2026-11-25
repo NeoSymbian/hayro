@@ -7,13 +7,17 @@ pub(crate) use mask::{DecodedMask, decode_mask};
 use crate::InterpreterWarning;
 use crate::color::ColorSpace;
 use crate::function::interpolate;
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
 use crate::x_object::image::{ImageKind, ImageXObject};
+use alloc::vec;
+use alloc::vec::Vec;
+use core::iter;
 use hayro_syntax::bit_reader::BitReader;
 use hayro_syntax::object::Array;
 use hayro_syntax::object::dict::keys::*;
 use hayro_syntax::object::stream::{FilterResult, ImageColorSpace, ImageDecodeParams};
 use smallvec::SmallVec;
-use std::iter;
 
 struct DecodeContext<'a> {
     decoded: FilterResult<'a>,

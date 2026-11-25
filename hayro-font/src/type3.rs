@@ -1,14 +1,17 @@
 use crate::GlyphId;
 use crate::true_type::{Width, read_encoding, read_widths};
+use crate::util::FxHashMap;
 use crate::util::{CacheKey, hash128};
 use crate::{CMapResolverFn, Encoding, UNITS_PER_EM, glyph_name_to_unicode, read_to_unicode};
+use alloc::rc::Rc;
+use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec::Vec;
 use hayro_cmap::{BfString, CMap};
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Stream;
 use hayro_syntax::object::dict::keys::{CHAR_PROCS, FONT_MATRIX, RESOURCES};
 use kurbo::Affine;
-use rustc_hash::FxHashMap;
-use std::rc::Rc;
 
 /// A glyph of a Type 3 font, defined by a content stream of the font.
 #[derive(Clone, Debug)]

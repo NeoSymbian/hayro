@@ -1,3 +1,7 @@
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
+use alloc::vec;
+use alloc::vec::Vec;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Number;
 use hayro_syntax::object::dict::keys::{C0, C1, N};
@@ -46,6 +50,7 @@ impl Type2 {
 #[cfg(test)]
 mod tests {
     use crate::function::Function;
+    use alloc::vec;
 
     use hayro_syntax::object::Object;
     use hayro_syntax::object::{Dict, FromBytes};

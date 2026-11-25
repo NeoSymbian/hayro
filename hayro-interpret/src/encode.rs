@@ -5,10 +5,14 @@ use crate::function::MAX_COMPONENTS;
 use crate::interpret::state::ActiveTransferFunction;
 use crate::pattern::ShadingPattern;
 use crate::shading::{ShadingFunction, ShadingType, Triangle};
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
+use crate::util::FxHashMap;
 use crate::util::x_y_advances;
+use alloc::sync::Arc;
+use alloc::vec;
+use alloc::vec::Vec;
 use kurbo::{Affine, Point, Rect};
-use rustc_hash::FxHashMap;
-use std::sync::Arc;
 
 /// A shading pattern that was encoded so it can be sampled.
 #[derive(Clone, Debug)]

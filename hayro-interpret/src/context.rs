@@ -12,6 +12,9 @@ use crate::{
     ClipPath, Device, DrawProps, FillRule, InterpreterSettings, InterpreterWarning, Paint,
     StrokeProps,
 };
+use alloc::boxed::Box;
+use alloc::vec;
+use alloc::vec::Vec;
 use hayro_syntax::content::ops::Transform;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Name;

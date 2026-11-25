@@ -12,8 +12,13 @@ This crate forbids unsafe code via a crate-level attribute.
   substitute for the 14 PDF standard fonts.
 */
 
+#![no_std]
 #![forbid(unsafe_code)]
 #![deny(missing_docs)]
+
+extern crate alloc;
+#[cfg(feature = "std")]
+extern crate std;
 
 use crate::cid::Type0Font;
 use crate::generated::{
@@ -22,8 +27,15 @@ use crate::generated::{
 };
 use crate::true_type::TrueTypeFont;
 use crate::type1::Type1Font;
+use crate::util::FxHashMap;
 use crate::util::{CacheKey, hash128};
+use alloc::borrow::Cow;
+use alloc::rc::Rc;
+use alloc::sync::Arc;
 use bitflags::bitflags;
+use core::cell::RefCell;
+use core::fmt::Debug;
+use core::ops::Deref;
 use hayro_cmap::{BfString, CMap, CMapName, CharacterCollection};
 use hayro_syntax::object::Name;
 use hayro_syntax::object::dict::keys::SUBTYPE;
@@ -32,14 +44,7 @@ use hayro_syntax::object::{Dict, Stream};
 use kurbo::{BezPath, Vec2};
 use outline::OutlineFont;
 use program::FontProgram;
-use rustc_hash::FxHashMap;
 use skrifa::ScalerFont;
-use std::borrow::Cow;
-use std::cell::RefCell;
-use std::fmt::Debug;
-use std::ops::Deref;
-use std::rc::Rc;
-use std::sync::Arc;
 
 mod cid;
 mod generated;
@@ -51,6 +56,8 @@ mod type1;
 mod type3;
 mod util;
 
+use alloc::string::String;
+use alloc::string::ToString;
 pub use hayro_cmap;
 pub use hayro_syntax;
 pub use kurbo;
@@ -814,6 +821,7 @@ pub(crate) fn normalized_glyph_name(mut name: &str) -> &str {
 #[cfg(test)]
 mod tests {
     use super::glyph_name_to_unicode;
+    use alloc::string::{String, ToString};
     use hayro_cmap::BfString;
 
     fn map(name: &str) -> Option<String> {

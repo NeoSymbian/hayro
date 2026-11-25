@@ -1,10 +1,14 @@
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
+use alloc::vec;
+use alloc::vec::Vec;
+use core::array;
+use core::ops::Rem;
 use hayro_syntax::content;
 use hayro_syntax::object::Number;
 use hayro_syntax::object::Stream;
 use hayro_syntax::reader::Reader;
 use hayro_syntax::reader::{ReaderContext, ReaderExt};
-use std::array;
-use std::ops::Rem;
 
 /// A type 4 function (postscript function).
 #[derive(Debug)]
@@ -139,7 +143,7 @@ impl<T: Default, const C: usize> ArgumentsStack<T, C> {
             None
         } else {
             self.len -= 1;
-            Some(std::mem::take(&mut self.stack[self.len]))
+            Some(core::mem::take(&mut self.stack[self.len]))
         }
     }
 
@@ -554,8 +558,11 @@ impl PostScriptOp {
 mod tests {
     use crate::function::type4::{PostScriptOp, Type4, parse_procedure};
     use crate::function::{Function, FunctionType, Interval, Repr};
-    use std::f32::consts::LN_10;
-    use std::sync::Arc;
+    use alloc::format;
+    use alloc::sync::Arc;
+    use alloc::vec;
+    use alloc::vec::Vec;
+    use core::f32::consts::LN_10;
 
     use hayro_syntax::object::Number;
 

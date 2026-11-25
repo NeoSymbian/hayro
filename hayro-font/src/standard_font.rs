@@ -3,15 +3,18 @@ use crate::ProgramLoader;
 use crate::generated::{glyph_names, metrics, standard, symbol, zapf_dings};
 use crate::program::FontProgram;
 use crate::true_type::{Width, read_encoding, read_widths};
+use crate::util::FxHashMap;
 use crate::{
     Encoding, FontQuery, glyph_name_to_unicode, normalized_glyph_name, stretch_factor,
     strip_subset_prefix,
 };
+use alloc::boxed::Box;
+use alloc::string::String;
+use alloc::vec::Vec;
 use hayro_cmap::BfString;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Name;
 use hayro_syntax::object::dict::keys::{BASE_FONT, FONT_DESC, FONT_WEIGHT, ITALIC_ANGLE};
-use rustc_hash::FxHashMap;
 
 /// The 14 standard fonts of PDF.
 #[derive(Copy, Clone, Debug, Hash)]
@@ -77,7 +80,7 @@ impl StandardFont {
     /// [`FontResolverFn`]: crate::FontResolverFn
     #[cfg(feature = "embed-fonts")]
     pub fn get_font_data(&self) -> (crate::FontData, u32) {
-        use std::sync::Arc;
+        use alloc::sync::Arc;
 
         let data = match self {
             Self::Helvetica => &include_bytes!("../assets/FoxitSans.pfb")[..],
@@ -223,7 +226,7 @@ impl StandardKind {
             fallback,
             encoding,
         };
-        kind.code_to_glyph = Box::new(std::array::from_fn(|code| kind.lookup_glyph(code as u8)));
+        kind.code_to_glyph = Box::new(core::array::from_fn(|code| kind.lookup_glyph(code as u8)));
 
         Some(kind)
     }

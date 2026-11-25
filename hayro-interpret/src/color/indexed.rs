@@ -1,7 +1,10 @@
 use super::{ColorSpace, ToLuma, ToRgb, U8Lookup};
 use crate::cache::Cache;
+use alloc::borrow::Cow;
+use alloc::boxed::Box;
+use alloc::vec;
+use alloc::vec::Vec;
 use hayro_syntax::object::{self, Array, Name, Object, Stream};
-use std::borrow::Cow;
 
 #[derive(Debug, Clone)]
 pub(crate) struct Indexed {

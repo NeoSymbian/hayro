@@ -2,15 +2,17 @@ use crate::GlyphId;
 use crate::program::FontProgram;
 use crate::standard_font::{StandardFont, StandardKind, select_standard_font};
 use crate::true_type::{Width, read_encoding, read_widths};
+use crate::util::FxHashMap;
 use crate::{
     Encoding, FallbackFontQuery, glyph_name_to_unicode, normalized_glyph_name, read_to_unicode,
 };
 use crate::{FontLoader, ProgramLoader};
+use alloc::string::String;
+use alloc::vec::Vec;
 use hayro_cmap::{BfString, CMap};
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Stream;
 use hayro_syntax::object::dict::keys::{FONT_DESC, FONT_FILE, FONT_FILE3};
-use rustc_hash::FxHashMap;
 
 #[derive(Debug)]
 pub(crate) struct Type1Font(Kind, Option<CMap>);

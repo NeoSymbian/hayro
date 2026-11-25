@@ -7,6 +7,8 @@
 use crate::color::AlphaColor;
 use crate::encode::{EncodedRadialAxialShading, EncodedShadingPattern, RadialAxialParams};
 use crate::function::MAX_COMPONENTS;
+use alloc::vec;
+use alloc::vec::Vec;
 use kurbo::{Affine, Circle, Point, Rect, Shape};
 
 const MAX_GRADIENT_SUBDIVISION_DEPTH: u8 = 10;
@@ -153,8 +155,8 @@ impl EncodedRadialAxialShading {
         let mut outer_extend = self.extend[1];
 
         if inner_circle.radius > outer_circle.radius {
-            std::mem::swap(&mut inner_circle, &mut outer_circle);
-            std::mem::swap(&mut inner_extend, &mut outer_extend);
+            core::mem::swap(&mut inner_circle, &mut outer_circle);
+            core::mem::swap(&mut inner_extend, &mut outer_extend);
         }
 
         let inner_extend_ok = inner_extend

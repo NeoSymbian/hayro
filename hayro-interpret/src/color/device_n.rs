@@ -1,8 +1,9 @@
 use super::{ColorSpace, ToRgb, U8Lookup};
 use crate::cache::Cache;
 use crate::function::{Function, MAX_COMPONENTS};
+use crate::util::FxHashMap;
+use alloc::vec::Vec;
 use hayro_syntax::object::{Array, Name, Object};
-use rustc_hash::FxHashMap;
 
 const MAX_CACHED_COLORS: usize = 1 << 18;
 

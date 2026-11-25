@@ -43,15 +43,18 @@ ab_glyph_rasterizer = { version = "0.1.10", default-features = false, features =
 bitflags = { version = "2.10" }
 bytemuck = { version = "1" }
 image = { version = "0.25", default-features = false }
-kurbo = { version = "0.13.0" }
+kurbo = { version = "0.13.0", default-features = false, features = ["libm"] }
 resvg = { version = "0.47.0" }
 flate2 = { version = "1" }
 phf = { version = "0.13.1", default-features = false }
 moxcms = { version = "0.8.1" }
-rustc-hash = { version = "2" }
-siphasher = "1"
-skrifa = { version = "0.49.0" }
+rustc-hash = { version = "2", default-features = false }
+siphasher = { version = "1", default-features = false }
+skrifa = { version = "0.49.0", default-features = false, features = ["libm"] }
 smallvec = { version = "1" }
+hashbrown = { version = "0.16", default-features = false }
+spin = { version = "0.10", default-features = false, features = ["spin_mutex", "lazy", "once"] }
+libm = { version = "0.2" }
 yoke = { version = "0.8" }
 pdf-writer = { version = "0.15" }
 xmlwriter = { version = "0.1" }

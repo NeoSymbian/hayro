@@ -4,6 +4,8 @@ use crate::pattern::Pattern;
 use crate::util::hash128;
 use crate::x_object::ImageXObject;
 use crate::x_object::soft_mask::SoftMask;
+use alloc::boxed::Box;
+use alloc::vec::Vec;
 use hayro_syntax::object::Stream;
 use kurbo::{Affine, BezPath, Cap, Join};
 use smallvec::{SmallVec, smallvec};
@@ -19,7 +21,22 @@ pub struct ClipPath {
 
 impl CacheKey for ClipPath {
     fn cache_key(&self) -> u128 {
-        hash128(&(&self.path.to_svg(), &self.fill))
+        // The path's elements as bits (kurbo's `to_svg` needs std).
+        let mut bits = Vec::new();
+        for el in self.path.elements() {
+            let (tag, points): (u64, &[kurbo::Point]) = match el {
+                kurbo::PathEl::MoveTo(p) => (0, core::slice::from_ref(p)),
+                kurbo::PathEl::LineTo(p) => (1, core::slice::from_ref(p)),
+                kurbo::PathEl::QuadTo(a, b) => (2, &[*a, *b][..]),
+                kurbo::PathEl::CurveTo(a, b, c) => (3, &[*a, *b, *c][..]),
+                kurbo::PathEl::ClosePath => (4, &[][..]),
+            };
+            bits.push(tag);
+            for p in points {
+                bits.extend([p.x.to_bits(), p.y.to_bits()]);
+            }
+        }
+        hash128(&(&bits, &self.fill))
     }
 }
 

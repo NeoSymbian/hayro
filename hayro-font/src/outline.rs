@@ -2,8 +2,10 @@ use crate::cid::Type0Font;
 use crate::program::FontProgram;
 use crate::true_type::TrueTypeFont;
 use crate::type1::Type1Font;
+use alloc::rc::Rc;
+use alloc::string::String;
+use alloc::string::ToString;
 use hayro_cmap::BfString;
-use std::rc::Rc;
 
 /// Font data and metadata for downstream use.
 #[derive(Clone)]

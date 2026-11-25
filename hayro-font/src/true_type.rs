@@ -3,10 +3,16 @@ use crate::GlyphId;
 use crate::generated::{glyph_names, mac_os_roman, mac_roman, standard};
 use crate::program::{CmapPlatform, CmapSubtable, FontProgram, ProgramKind};
 use crate::standard_font::{StandardFont, StandardKind, select_standard_font};
+use crate::util::FxHashMap;
 use crate::{
     Encoding, FallbackFontQuery, FontFlags, glyph_name_to_unicode, read_to_unicode,
     strip_subset_prefix, unicode_from_name,
 };
+use alloc::boxed::Box;
+use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec::Vec;
+use core::ops::Deref;
 use hayro_cmap::{BfString, CMap};
 use hayro_syntax::object::Array;
 use hayro_syntax::object::Dict;
@@ -14,8 +20,6 @@ use hayro_syntax::object::Name;
 use hayro_syntax::object::Object;
 use hayro_syntax::object::Stream;
 use hayro_syntax::object::dict::keys::*;
-use rustc_hash::FxHashMap;
-use std::ops::Deref;
 
 #[derive(Debug)]
 pub(crate) struct TrueTypeFont {
@@ -227,7 +231,7 @@ impl EmbeddedKind {
         };
         let base_font = kind.base_font.clone();
         let subtables = base_font.cmap_subtables();
-        kind.code_to_glyph = Box::new(std::array::from_fn(|code| {
+        kind.code_to_glyph = Box::new(core::array::from_fn(|code| {
             kind.lookup_glyph(code as u8, &subtables)
         }));
 

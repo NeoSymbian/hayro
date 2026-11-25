@@ -1,4 +1,6 @@
 use crate::function::{Function, Interval, interpolate, read_intervals};
+use alloc::vec;
+use alloc::vec::Vec;
 use hayro_syntax::object::Array;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Object;

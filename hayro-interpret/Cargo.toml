@@ -12,19 +12,26 @@ readme = "README.md"
 [dependencies]
 hayro-cmap = { workspace = true }
 hayro-font = { workspace = true }
-hayro-syntax = { workspace = true, features = ["std", "images", "unsafe"] }
+hayro-syntax = { workspace = true, features = ["images"] }
 kurbo = { workspace = true }
 smallvec = { workspace = true }
-moxcms = { workspace = true, features = ["in_place"] }
+moxcms = { workspace = true, features = ["in_place"], optional = true }
 siphasher = { workspace = true }
 bitflags = { workspace = true }
 rustc-hash = { workspace = true }
+hashbrown = { workspace = true }
+spin = { workspace = true }
+libm = { workspace = true }
 
 [dev-dependencies]
 image = { workspace = true, features = ["png"] }
 
 [features]
-default = ["embed-fonts", "embed-cmaps"]
+default = ["std", "icc", "embed-fonts", "embed-cmaps"]
+# Use the standard library (without it the crate is no_std + alloc).
+std = ["hayro-syntax/std", "hayro-syntax/unsafe", "hayro-font/std", "kurbo/std"]
+# Colour management of ICC-based colour spaces with moxcms. Without it they use their alternate space.
+icc = ["std", "dep:moxcms"]
 # Embed a light-weight set of fonts (around 240KB) that can be used as a substitute for the 14 PDF standard fonts.
 embed-fonts = ["hayro-font/embed-fonts"]
 # Embed the 61 predefined cmaps into the binary. Adds about ~250KB of brotli-encoded data.

@@ -12,12 +12,12 @@ use crate::color::ColorSpace;
 use crate::context::Context;
 use crate::device::Device;
 use crate::interpret::state::ActiveTransferFunction;
+use core::ops::Deref;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Name;
 use hayro_syntax::object::Stream;
 use hayro_syntax::object::dict::keys::*;
 use hayro_syntax::page::Resources;
-use std::ops::Deref;
 
 pub(crate) enum XObject<'a> {
     FormXObject(FormXObject<'a>),

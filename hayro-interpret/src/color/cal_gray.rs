@@ -1,4 +1,7 @@
 use super::{ToLuma, ToRgb, U8Lookup};
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
+use alloc::boxed::Box;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::dict::keys::{BLACK_POINT, GAMMA, WHITE_POINT};
 

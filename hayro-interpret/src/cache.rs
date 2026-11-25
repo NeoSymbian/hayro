@@ -1,11 +1,13 @@
+use crate::util::FxHashMap;
 use crate::util::hash128;
+use alloc::boxed::Box;
+use alloc::sync::Arc;
+use core::any::Any;
+use hashbrown::hash_map::Entry;
 use hayro_syntax::object::{Array, Dict, MaybeRef, Name, Null, ObjRef, Object, Stream};
 use hayro_syntax::page::Resources;
 use kurbo::{Affine, Rect};
-use rustc_hash::FxHashMap;
-use std::any::Any;
-use std::collections::hash_map::Entry;
-use std::sync::{Arc, Mutex};
+use spin::Mutex;
 
 type CacheMap = FxHashMap<u128, Option<Box<dyn Any + Send + Sync>>>;
 #[derive(Clone)]
@@ -27,7 +29,7 @@ impl Cache {
         id: u128,
         f: impl FnOnce() -> Option<T>,
     ) -> Option<T> {
-        let mut locked = self.0.lock().unwrap();
+        let mut locked = self.0.lock();
 
         // We can't use `get_or_insert_with` here, because if the closure makes another access to the
         // cache, we end up with a deadlock.
@@ -39,7 +41,7 @@ impl Cache {
             Entry::Vacant(_) => {
                 drop(locked);
                 let val = f();
-                self.0.lock().unwrap().insert(
+                self.0.lock().insert(
                     id,
                     val.clone()
                         .map(|val| Box::new(val) as Box<dyn Any + Send + Sync>),

@@ -2,13 +2,13 @@ use super::xobject_oc;
 use crate::context::Context;
 use crate::device::Device;
 use crate::{ClipPath, FillRule, interpret};
+use alloc::borrow::Cow;
 use hayro_syntax::content::TypedIter;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Stream;
 use hayro_syntax::object::dict::keys::*;
 use hayro_syntax::page::Resources;
 use kurbo::{Affine, Rect, Shape};
-use std::borrow::Cow;
 
 pub(crate) struct FormXObject<'a> {
     pub(crate) decoded: Cow<'a, [u8]>,
@@ -76,8 +76,8 @@ impl<'a> FormXObject<'a> {
         if self.is_transparency_group {
             device.push_transparency_group(
                 context.fill_paint().alpha,
-                std::mem::take(&mut context.compositing_mut().soft_mask),
-                std::mem::take(&mut context.compositing_mut().blend_mode),
+                core::mem::take(&mut context.compositing_mut().soft_mask),
+                core::mem::take(&mut context.compositing_mut().blend_mode),
             );
 
             context.fill_paint_mut().alpha = 1.0;

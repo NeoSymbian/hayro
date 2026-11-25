@@ -2,12 +2,24 @@
 
 mod cal_gray;
 mod cal_rgb;
+#[cfg(feature = "icc")]
+mod device_cmyk;
+#[cfg(not(feature = "icc"))]
+#[path = "device_cmyk_none.rs"]
 mod device_cmyk;
 mod device_gray;
 mod device_n;
 mod device_rgb;
+#[cfg(feature = "icc")]
+mod icc;
+#[cfg(not(feature = "icc"))]
+#[path = "icc_none.rs"]
 mod icc;
 mod indexed;
+#[cfg(feature = "icc")]
+mod lab;
+#[cfg(not(feature = "icc"))]
+#[path = "lab_none.rs"]
 mod lab;
 mod pattern;
 mod separation;
@@ -24,14 +36,18 @@ use self::lab::Lab;
 use self::pattern::Pattern;
 use self::separation::Separation;
 use crate::cache::{Cache, CacheKey};
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
+use alloc::boxed::Box;
+use alloc::sync::Arc;
+use core::ops::Deref;
 use hayro_syntax::object::Dict;
 use hayro_syntax::object::Name;
 use hayro_syntax::object::Object;
 use hayro_syntax::object::Stream;
 use hayro_syntax::object::dict::keys::*;
 use smallvec::{SmallVec, smallvec};
-use std::ops::Deref;
-use std::sync::{Arc, OnceLock};
+use spin::Once as OnceLock;
 
 /// A storage for the components of colors.
 pub type ColorComponents = SmallVec<[f32; 4]>;
@@ -45,8 +61,8 @@ impl<T> Default for U8Lookup<T> {
     }
 }
 
-impl<T> std::fmt::Debug for U8Lookup<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl<T> core::fmt::Debug for U8Lookup<T> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.write_str("U8Lookup")
     }
 }
@@ -57,7 +73,7 @@ impl<T> U8Lookup<T> {
         init: impl FnOnce(&[u8; 256]) -> Option<Box<[T; 256]>>,
     ) -> Option<&[T; 256]> {
         self.0
-            .get_or_init(|| {
+            .call_once(|| {
                 let input: [u8; 256] = core::array::from_fn(|index| index as u8);
                 init(&input)
             })

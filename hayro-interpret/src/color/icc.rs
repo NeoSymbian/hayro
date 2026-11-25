@@ -1,10 +1,11 @@
 use super::{ToLuma, ToRgb};
+use alloc::sync::Arc;
+use core::fmt::{Debug, Formatter};
 use moxcms::{
     ColorProfile, DataColorSpace, InPlaceTransformExecutor, Layout, Transform8BitExecutor,
     TransformOptions,
 };
-use std::fmt::{Debug, Formatter};
-use std::sync::{Arc, OnceLock};
+use spin::Once as OnceLock;
 
 struct ICCColorRepr {
     number_components: usize,
@@ -21,7 +22,7 @@ struct ICCColorRepr {
 pub(crate) struct ICCProfile(Arc<ICCColorRepr>);
 
 impl Debug for ICCProfile {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "ICCColor {{..}}")
     }
 }
@@ -120,7 +121,7 @@ impl ICCProfile {
     fn transform_u8(&self) -> Option<&Arc<Transform8BitExecutor>> {
         self.0
             .transform_u8
-            .get_or_init(|| {
+            .call_once(|| {
                 self.0
                     .src_profile
                     .as_ref()?

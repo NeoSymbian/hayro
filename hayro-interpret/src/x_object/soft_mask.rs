@@ -6,6 +6,10 @@ use crate::function::{Function, TransferFunction};
 use crate::interpret::state::State;
 use crate::util::hash128;
 use crate::{CacheKey, InterpreterSettings};
+use alloc::rc::Rc;
+use core::fmt::Debug;
+use core::hash::{Hash, Hasher};
+use core::ops::Deref;
 use hayro_syntax::object::Name;
 use hayro_syntax::object::Stream;
 use hayro_syntax::object::dict::keys::*;
@@ -14,10 +18,6 @@ use hayro_syntax::page::Resources;
 use hayro_syntax::xref::XRef;
 use kurbo::Affine;
 use smallvec::smallvec;
-use std::fmt::Debug;
-use std::hash::{Hash, Hasher};
-use std::ops::Deref;
-use std::rc::Rc;
 
 /// Type type of mask.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -58,7 +58,7 @@ impl Hash for Repr<'_> {
 pub struct SoftMask<'a>(Rc<Repr<'a>>);
 
 impl Debug for SoftMask<'_> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(f, "SoftMask({:032x})", self.0.dict_key)
     }
 }

@@ -12,15 +12,19 @@ readme = "README.md"
 [dependencies]
 bitflags = { workspace = true }
 hayro-cmap = { workspace = true }
-hayro-syntax = { workspace = true, features = ["std"] }
+hayro-syntax = { workspace = true }
 kurbo = { workspace = true }
 phf = { workspace = true, features = ["macros"] }
 rustc-hash = { workspace = true }
+hashbrown = { workspace = true }
+libm = { workspace = true }
 siphasher = { workspace = true }
 skrifa = { workspace = true }
 
 [features]
-default = ["embed-fonts"]
+default = ["std", "embed-fonts"]
+# Use the standard library (without it the crate is no_std + alloc).
+std = ["hayro-syntax/std", "skrifa/std", "kurbo/std"]
 # Embed a light-weight set of fonts (around 240KB) that can be used as a substitute for the 14 PDF standard fonts.
 embed-fonts = []
 

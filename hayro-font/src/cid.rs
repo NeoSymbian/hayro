@@ -4,9 +4,14 @@ use crate::GlyphId;
 use crate::generated::glyph_names;
 use crate::program::{FontProgram, ProgramKind};
 use crate::standard_font::select_standard_font;
+use crate::util::FxHashMap;
 use crate::{
     FallbackFontQuery, FontFlags, FontQuery, read_to_unicode, stretch_factor, strip_subset_prefix,
 };
+use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec::Vec;
+use core::ops::Deref;
 use hayro_cmap::{BfString, CMap, CharacterCollection, CidFamily, WritingMode};
 use hayro_syntax::object;
 use hayro_syntax::object::Dict;
@@ -15,8 +20,6 @@ use hayro_syntax::object::Stream;
 use hayro_syntax::object::dict::keys::*;
 use hayro_syntax::object::{Array, Object};
 use kurbo::Vec2;
-use rustc_hash::FxHashMap;
-use std::ops::Deref;
 
 #[derive(Debug)]
 pub(crate) struct Type0Font {

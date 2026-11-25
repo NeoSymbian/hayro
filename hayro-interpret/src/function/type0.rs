@@ -1,4 +1,7 @@
 use crate::function::{Interval, MAX_COMPONENTS, read_intervals};
+#[cfg(not(feature = "std"))]
+use crate::util::FloatExt;
+use alloc::vec::Vec;
 use hayro_syntax::bit_reader::BitReader;
 use hayro_syntax::object::Array;
 use hayro_syntax::object::Stream;
